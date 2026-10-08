@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import BlobCursor from '@/components/BlobCursor/BlobCursor';
 
 const copy = {
   en: {
@@ -43,13 +44,19 @@ export default function Home() {
   const [entered, setEntered] = useState(false);
   const [language, setLanguage] = useState<Language>('en');
   const [light, setLight] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const t = copy[language];
 
   useEffect(() => {
     document.body.classList.toggle('is-light', light);
     document.body.classList.toggle('is-entered', entered);
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updateMotion = () => setReducedMotion(motionQuery.matches);
+    updateMotion();
+    motionQuery.addEventListener('change', updateMotion);
     return () => {
       document.body.classList.remove('is-light', 'is-entered');
+      motionQuery.removeEventListener('change', updateMotion);
     };
   }, [entered, light]);
 
@@ -61,6 +68,24 @@ export default function Home() {
   return (
     <main>
       <section className={`threshold ${entered ? 'threshold--left' : ''}`} aria-hidden={entered}>
+        {!reducedMotion && <BlobCursor
+          material="jelly"
+          color="#9cb4da"
+          size={64}
+          trail={10}
+          lag={0.68}
+          goo={0.8}
+          stretch={0.42}
+          wobble={0.65}
+          splash
+          splashCount={4}
+          splashSpeed={0.3}
+          splashSize={0.35}
+          regrow={0.65}
+          shine={0.85}
+          hideCursor={false}
+          className="threshold__blob"
+        />}
         <div className="threshold__grain" />
         <div className="threshold__top"><span>MMXXIV / 01</span><span>Portfolio</span></div>
         <div className="threshold__center">
