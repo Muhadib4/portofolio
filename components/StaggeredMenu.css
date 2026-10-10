@@ -12,7 +12,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: auto;
+  z-index: 40;
   overflow: hidden;
 }
 
@@ -27,7 +27,7 @@
   padding: 1.8rem clamp(1.5rem, 4vw, 3rem);
   background: transparent;
   pointer-events: none;
-  z-index: 20;
+  z-index: 50;
 }
 
 .staggered-menu-header > * {
@@ -37,6 +37,7 @@
 .sm-logo {
   display: flex;
   align-items: center;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -57,6 +58,8 @@
   cursor: pointer;
   color: #ffffff;
   mix-blend-mode: difference;
+  pointer-events: auto;
+  z-index: 51;
   font-weight: 500;
   line-height: 1;
   overflow: visible;
