@@ -21,7 +21,8 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--foreground); ou
 .home-content::after { background: var(--line); content: ''; height: 1px; left: clamp(1.5rem, 10vw, 10rem); opacity: .8; position: absolute; right: clamp(1.5rem, 10vw, 10rem); top: 50%; z-index: -1; }
 .home-content__eyebrow, .home-content__subtitle { background: var(--background); margin: 0; position: relative; width: fit-content; z-index: 1; }
 .home-content__eyebrow { animation: home-content-in 950ms cubic-bezier(.2,.75,.25,1) 1.78s both; color: var(--muted); font-size: clamp(.6rem, .75vw, .72rem); font-weight: 400; letter-spacing: .2em; line-height: 1.6; opacity: 0; padding-right: 1.75rem; }
-.home-content h1 { animation: home-content-in 950ms cubic-bezier(.2,.75,.25,1) 1.88s both; background: var(--background); color: var(--foreground); font-size: clamp(3.4rem, 9.5vw, 10.5rem); font-weight: 500; letter-spacing: -.085em; line-height: .88; margin: 1.55rem 0 0; max-width: 8ch; opacity: 0; padding-right: 1.5rem; position: relative; text-wrap: balance; z-index: 1; }
+.home-content__name { animation: home-content-in 950ms cubic-bezier(.2,.75,.25,1) 1.88s both; background: var(--background); margin: 1.55rem 0 0; max-width: min(100%, 72rem); min-height: clamp(4.2rem, 10.5vw, 10rem); opacity: 0; padding-right: 1.5rem; position: relative; width: fit-content; z-index: 1; }
+.home-content__warp { min-height: clamp(4.2rem, 10.5vw, 10rem); width: min(78vw, 72rem); }
 .home-content__subtitle { animation: home-content-in 950ms cubic-bezier(.2,.75,.25,1) 1.98s both; color: var(--muted); font-size: clamp(.78rem, 1.15vw, 1rem); letter-spacing: .01em; line-height: 1.75; margin-top: 2.2rem; max-width: 38rem; opacity: 0; padding-right: 1rem; }
 
 .welcome-intro { align-items: center; animation: welcome-exit 700ms cubic-bezier(.76,0,.24,1) 1.55s forwards; background: var(--background); display: flex; flex-direction: column; inset: 0; justify-content: center; position: fixed; z-index: 60; }
@@ -40,7 +41,8 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--foreground); ou
 @media (max-width: 640px) {
   .home-content { padding: 7rem 1.5rem 4rem; }
   .home-content::after { left: 1.5rem; right: 1.5rem; top: 48%; }
-  .home-content h1 { font-size: clamp(3rem, 14vw, 5.8rem); max-width: 7.5ch; }
+  .home-content__name { max-width: 100%; padding-right: .75rem; }
+  .home-content__warp { min-height: clamp(4rem, 15vw, 6rem); width: min(92vw, 38rem); }
   .home-content__eyebrow { font-size: .58rem; letter-spacing: .13em; max-width: 19rem; }
   .home-content__subtitle { font-size: .78rem; line-height: 1.8; max-width: 19rem; }
   .welcome-intro__eyebrow { font-size: 7px; letter-spacing: .16em; margin-bottom: 20px; }
@@ -49,5 +51,5 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--foreground); ou
 
 @media (prefers-reduced-motion: reduce) {
   .welcome-intro { animation: none; display: none; }
-  .welcome-intro__eyebrow, .welcome-intro__word span, .welcome-intro__line span, .home-content__eyebrow, .home-content h1, .home-content__subtitle { animation: none; opacity: 1; transform: none; }
+  .welcome-intro__eyebrow, .welcome-intro__word span, .welcome-intro__line span, .home-content__eyebrow, .home-content__name, .home-content__subtitle { animation: none; opacity: 1; transform: none; }
 }

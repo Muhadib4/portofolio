@@ -1,6 +1,7 @@
 'use client';
 
 import StaggeredMenu from '@/components/StaggeredMenu';
+import WarpText from '@/components/WarpText';
 
 const welcomeLetters = ['W', 'E', 'L', 'C', 'O', 'M', 'E'];
 
@@ -23,7 +24,7 @@ export default function Home() {
         displaySocials
         displayItemNumbering
         menuButtonColor="#FFFFFF"
-        openMenuButtonColor="#FFFFFF"
+        openMenuButtonColor="#000000"
         changeMenuColorOnOpen
         colors={[
           '#000000',
@@ -42,7 +43,25 @@ export default function Home() {
 
       <section className="home-content" id="top" aria-labelledby="intro-name">
         <p className="home-content__eyebrow">INFORMATICS · DEVELOPER IN PROGRESS</p>
-        <h1 id="intro-name">Muhadiib Dwi Taajuddiin Trisno</h1>
+        <div id="intro-name" className="home-content__name">
+          <WarpText
+            text="Muhadiib"
+            color="#f5f5f5"
+            fontSize="clamp(3.4rem, 9.5vw, 10.5rem)"
+            fontWeight={800}
+            fontFamily="Arial, Helvetica, sans-serif"
+            letterSpacing="-.085em"
+            lineHeight={.88}
+            warpStrength={.045}
+            warpScale={1.7}
+            speed={.42}
+            pointerInfluence={.42}
+            pointerStrength={.3}
+            refraction={.012}
+            ripple
+            className="home-content__warp"
+          />
+        </div>
         <p className="home-content__subtitle">Learning · Full-Stack Development · Machine Learning · AI Development</p>
       </section>
     </main>
