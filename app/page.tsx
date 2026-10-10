@@ -126,7 +126,7 @@ export default function Home() {
           </div>
           <div className="hero__aside"><span className="aside-label">Focus</span><span>Full-stack<br />Machine learning<br />AI development</span></div>
           <div className="scroll-cue"><span>Scroll to explore</span><span className="scroll-cue__line" /></div>
-          <div className="hero__coordinates" aria-hidden="true">07°34' S<br />110°49' E</div>
+          <div className="hero__coordinates" aria-hidden="true">07°34&apos; S<br />110°49&apos; E</div>
         </section>
 
         <section className="section work-section" id="work">
