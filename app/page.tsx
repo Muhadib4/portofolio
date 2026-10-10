@@ -7,7 +7,6 @@ const copy = {
   en: {
     role: 'Informatics student',
     introLabel: 'A personal portfolio / 01',
-    heroTitle: 'Building for the digital frontier.',
     heroText: 'Exploring Full-Stack Development, Machine Learning, and Artificial Intelligence through experiments and projects.',
     projects: 'Explore projects',
     aboutCta: 'About me',
@@ -25,7 +24,6 @@ const copy = {
   id: {
     role: 'Mahasiswa informatika',
     introLabel: 'Portofolio personal / 01',
-    heroTitle: 'Membangun untuk perbatasan digital.',
     heroText: 'Mengeksplorasi Full-Stack Development, Machine Learning, dan Artificial Intelligence melalui eksperimen dan proyek.',
     projects: 'Lihat proyek',
     aboutCta: 'Tentang saya',
@@ -53,29 +51,53 @@ export default function Home() {
 
   useEffect(() => {
     document.body.classList.toggle('is-light', light);
+    return () => document.body.classList.remove('is-light');
+  }, [light]);
+
+  useEffect(() => {
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const updateMotion = () => setReducedMotion(motionQuery.matches);
+    const updateMotion = () => {
+      const shouldReduce = motionQuery.matches;
+      setReducedMotion(shouldReduce);
+      if (shouldReduce) setIntroActive(false);
+    };
+
     updateMotion();
     motionQuery.addEventListener('change', updateMotion);
-    const introTimer = window.setTimeout(() => setIntroActive(false), motionQuery.matches ? 250 : 1800);
+    const introTimer = window.setTimeout(() => setIntroActive(false), motionQuery.matches ? 100 : 4800);
 
     return () => {
-      document.body.classList.remove('is-light');
       motionQuery.removeEventListener('change', updateMotion);
       window.clearTimeout(introTimer);
     };
-  }, [light]);
+  }, []);
 
   return (
     <main>
-      <section className={`mystic-intro ${introActive ? 'mystic-intro--active' : ''} ${reducedMotion ? 'mystic-intro--reduced' : ''}`} aria-hidden={!introActive}>
-        <div className="mystic-intro__atmosphere" />
-        <div className="mystic-intro__content">
-          <BrandRune size={72} className="mystic-intro__rune" />
-          <div className="mystic-intro__wordmark">MUHADIIB</div>
-          <span className="mystic-intro__line" />
+      <section
+        className={`cinematic-intro ${introActive ? 'cinematic-intro--active' : ''} ${reducedMotion ? 'cinematic-intro--reduced' : ''}`}
+        aria-hidden={!introActive}
+      >
+        <div className="cinematic-intro__frames" aria-hidden="true">
+          <div className="cinematic-intro__frame cinematic-intro__frame--mountain" />
+          <div className="cinematic-intro__frame cinematic-intro__frame--forest" />
+          <div className="cinematic-intro__frame cinematic-intro__frame--lake" />
         </div>
-        <span className="mystic-intro__index">01 / 04</span>
+        <div className="cinematic-intro__shade" />
+        <div className="cinematic-intro__topline">
+          <span>MUHADIIB / PORTFOLIO</span>
+          <span>INDONESIA · 2026</span>
+        </div>
+        <div className="cinematic-intro__title">
+          <BrandRune size={44} className="cinematic-intro__rune" />
+          <p>ENTER A DIFFERENT PERSPECTIVE</p>
+          <span>MUHADIIB</span>
+          <i />
+        </div>
+        <div className="cinematic-intro__bottomline">
+          <span>FULL-STACK · MACHINE LEARNING · AI</span>
+          <span className="cinematic-intro__counter">01 <b>/</b> 03</span>
+        </div>
       </section>
 
       <div className="site-shell" id="content" tabIndex={-1}>
@@ -91,10 +113,20 @@ export default function Home() {
         </header>
 
         <section className="hero" id="top">
+          <div className="hero__backdrop" aria-hidden="true" />
           <div className="hero__meta"><span>{t.introLabel}</span><span>Est. / 2024</span></div>
-          <div className="hero__content"><p className="eyebrow">{t.role}</p><h1>Building for the <em>digital frontier.</em></h1><p className="hero__text">{t.heroText}</p><div className="hero__actions"><a className="button button--primary" href="#work">{t.projects}<span>↗</span></a><a className="button button--quiet" href="#about">{t.aboutCta}<span>↓</span></a></div></div>
+          <div className="hero__content">
+            <p className="eyebrow">{t.role}</p>
+            <h1>Building for the <em>digital frontier.</em></h1>
+            <p className="hero__text">{t.heroText}</p>
+            <div className="hero__actions">
+              <a className="button button--primary" href="#work">{t.projects}<span>↗</span></a>
+              <a className="button button--quiet" href="#about">{t.aboutCta}<span>↓</span></a>
+            </div>
+          </div>
           <div className="hero__aside"><span className="aside-label">Focus</span><span>Full-stack<br />Machine learning<br />AI development</span></div>
           <div className="scroll-cue"><span>Scroll to explore</span><span className="scroll-cue__line" /></div>
+          <div className="hero__coordinates" aria-hidden="true">07°34' S<br />110°49' E</div>
         </section>
 
         <section className="section work-section" id="work">
