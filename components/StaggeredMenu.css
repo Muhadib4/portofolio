@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  z-index: 40;
+  z-index: auto;
   pointer-events: none;
 }
 
@@ -12,7 +12,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 40;
+  z-index: auto;
   overflow: hidden;
 }
 
@@ -74,8 +74,6 @@
 
 .sm-toggle-textWrap {
   position: relative;
-  color: #ffffff;
-  mix-blend-mode: difference;
   display: inline-block;
   height: 1em;
   overflow: hidden;
@@ -92,16 +90,12 @@
 
 .sm-toggle-line {
   display: block;
-  color: #ffffff;
-  mix-blend-mode: difference;
   height: 1em;
   line-height: 1;
 }
 
 .sm-icon {
   position: relative;
-  color: #ffffff;
-  mix-blend-mode: difference;
   width: 14px;
   height: 14px;
   flex: 0 0 14px;
@@ -131,8 +125,6 @@
 
 .sm-line {
   display: none !important;
-  color: #ffffff;
-  mix-blend-mode: difference;
 }
 
 .staggered-menu-panel {
