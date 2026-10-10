@@ -56,7 +56,6 @@
   border: none;
   cursor: pointer;
   color: #ffffff;
-  mix-blend-mode: difference;
   font-weight: 500;
   line-height: 1;
   overflow: visible;
@@ -80,6 +79,7 @@
   white-space: nowrap;
   width: var(--sm-toggle-width, auto);
   min-width: var(--sm-toggle-width, auto);
+  mix-blend-mode: difference;
 }
 
 .sm-toggle-textInner {
@@ -103,6 +103,7 @@
   align-items: center;
   justify-content: center;
   will-change: transform;
+  mix-blend-mode: difference;
 }
 
 .sm-panel-itemWrap {
