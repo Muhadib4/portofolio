@@ -383,12 +383,9 @@ export const StaggeredMenu = ({
     >
       <div ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
         {(() => {
-          const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
-          let arr = [...raw];
-          if (arr.length >= 3) {
-            const mid = Math.floor(arr.length / 2);
-            arr.splice(mid, 1);
-          }
+          const arr = colors && colors.length
+            ? [...colors]
+            : ['#000000', '#050B1F', '#0A1B4D', '#123A8C', '#155EEF', '#3B82F6', '#BFDBFE', '#FFFFFF'];
           return arr.map((c, i) => <div key={i} className="sm-prelayer" style={{ background: c }} />);
         })()}
       </div>

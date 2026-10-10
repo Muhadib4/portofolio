@@ -22,11 +22,20 @@ export default function Home() {
         position="right"
         displaySocials
         displayItemNumbering
-        menuButtonColor="#F5F5F5"
-        openMenuButtonColor="#F5F5F5"
+        menuButtonColor="#FFFFFF"
+        openMenuButtonColor="#FFFFFF"
         changeMenuColorOnOpen
-        colors={['#B497CF', '#5227FF']}
-        accentColor="#ff6b6b"
+        colors={[
+          '#000000',
+          '#050B1F',
+          '#0A1B4D',
+          '#123A8C',
+          '#155EEF',
+          '#3B82F6',
+          '#BFDBFE',
+          '#FFFFFF'
+        ]}
+        accentColor="#155EEF"
         items={[{ label: 'Home', link: '#top', ariaLabel: 'Return to homepage' }]}
         socialItems={[{ label: 'GitHub', link: 'https://github.com/Muhadib4/portofolio' }]}
       />
