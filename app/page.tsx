@@ -27,7 +27,7 @@ export default function Home() {
           <div className="intro-home__main">
             <p className="intro-home__eyebrow">INFORMATICS · DEVELOPER IN PROGRESS</p>
             <h1 id="intro-name" className="intro-home__name"><span>Muhadiib</span><span>Dwi Taajuddiin Trisno</span></h1>
-            <p className="intro-home__focus">Learning Full-Stack Development <span>·</span> Machine Learning <span>·</span> AI Development</p>
+            <p className="intro-home__focus">Learning <span>·</span> Full-Stack Development <span>·</span> Machine Learning <span>·</span> AI Development</p>
           </div>
           <div className="intro-home__side-note"><span>01</span><p>Learning<br />by building.</p></div>
         </section>
