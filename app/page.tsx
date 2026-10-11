@@ -43,7 +43,7 @@ export default function Home() {
 
       <section className="home-content" id="top" aria-labelledby="intro-name">
         <p className="home-content__eyebrow">INFORMATICS · DEVELOPER IN PROGRESS</p>
-        <div id="intro-name" className="home-content__name">
+        <h1 id="intro-name" className="home-content__name">
           <WarpText
             text="Muhadiib"
             color="#f5f5f5"
@@ -62,7 +62,10 @@ export default function Home() {
             className="home-content__warp"
             style={{ fontSize: 'clamp(3.4rem, 9.5vw, 10.5rem)', letterSpacing: '-.085em' }}
           />
-        </div>
+          <span className="home-content__name-line">Dwi</span>
+          <span className="home-content__name-line">Taajuddiin</span>
+          <span className="home-content__name-line">Trisno</span>
+        </h1>
         <p className="home-content__subtitle">Learning · Full-Stack Development · Machine Learning · AI Development</p>
       </section>
     </main>
