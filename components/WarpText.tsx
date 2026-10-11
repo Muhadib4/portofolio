@@ -373,13 +373,20 @@ const WarpText = ({
 
     gl.clearColor(0, 0, 0, 0);
     const canvas = gl.canvas;
+    const fallback = container.querySelector<HTMLElement>('[data-warp-fallback]');
+    const showFallback = (visible: boolean): void => {
+      if (fallback) fallback.style.display = visible ? 'flex' : 'none';
+      canvas.style.visibility = visible ? 'hidden' : 'visible';
+    };
     canvas.style.position = 'absolute';
     canvas.style.inset = '0';
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.display = 'block';
+    canvas.style.visibility = 'hidden';
     canvas.setAttribute('aria-hidden', 'true');
     container.appendChild(canvas);
+    showFallback(true);
 
     texture = new Texture(gl, {
       generateMipmaps: false,
@@ -444,6 +451,9 @@ const WarpText = ({
       texture.image = textCanvas;
       texture.needsUpdate = true;
       renderOnce();
+      // Replace the fallback only after the text texture has been uploaded and
+      // the WebGL frame has been rendered successfully.
+      showFallback(false);
     };
 
     const resize = () => {
@@ -572,7 +582,9 @@ const WarpText = ({
   }, []);
 
   return (
-    <div ref={containerRef} className={`warp-text ${className}`.trim()} style={style} role="img" aria-label={text} />
+    <div ref={containerRef} className={`warp-text ${className}`.trim()} style={style} role="img" aria-label={text}>
+      <span data-warp-fallback aria-hidden="true" style={{ display: 'flex' }}>{text}</span>
+    </div>
   );
 };
 

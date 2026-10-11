@@ -12,7 +12,7 @@ export default function Home() {
         <p className="welcome-intro__eyebrow">MUHADIIB DWI TAAJUDDIIN TRISNO</p>
         <div className="welcome-intro__word">
           {welcomeLetters.map((letter, index) => (
-            <span key={letter} style={{ animationDelay: `${index * 65}ms` }}>{letter}</span>
+            <span key={`${letter}-${index}`} style={{ animationDelay: `${index * 65}ms` }}>{letter}</span>
           ))}
         </div>
         <div className="welcome-intro__line"><span /></div>
@@ -60,6 +60,7 @@ export default function Home() {
             refraction={.012}
             ripple
             className="home-content__warp"
+            style={{ fontSize: 'clamp(3.4rem, 9.5vw, 10.5rem)', letterSpacing: '-.085em' }}
           />
         </div>
         <p className="home-content__subtitle">Learning · Full-Stack Development · Machine Learning · AI Development</p>
