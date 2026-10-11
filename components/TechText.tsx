@@ -23,6 +23,7 @@ export interface TechTextProps {
   fontFamily?: string;
   fontWeight?: number;
   fontSize?: number;
+  align?: 'left' | 'center';
   letterSpacing?: number;
   color?: string;
   accentColor?: string;
@@ -83,6 +84,7 @@ const TechText = ({
   fontFamily = '',
   fontWeight = 600,
   fontSize = 150,
+  align = 'center',
   letterSpacing = -0.05,
   color = '#ffffff',
   accentColor = '#ffffff',
@@ -114,6 +116,7 @@ const TechText = ({
       fontFamily,
       fontWeight,
       fontSize,
+      align,
       letterSpacing,
       color,
       accentColor,
@@ -217,6 +220,7 @@ const TechText = ({
         family(s),
         s.fontWeight,
         s.fontSize,
+        s.align,
         s.letterSpacing,
         s.color,
         s.dashLength,
@@ -248,7 +252,7 @@ const TechText = ({
       m = probe.measureText(s.text);
       const inkWidth = m.actualBoundingBoxLeft + m.actualBoundingBoxRight;
       const inkHeight = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
-      const x = (width - inkWidth) / 2 + m.actualBoundingBoxLeft;
+      const x = align === 'left' ? m.actualBoundingBoxLeft : (width - inkWidth) / 2 + m.actualBoundingBoxLeft;
       const baseline = (height - inkHeight) / 2 + m.actualBoundingBoxAscent;
       const next = {
         size,
@@ -717,7 +721,7 @@ const TechText = ({
       container.removeEventListener('pointercancel', onUp);
       container.removeEventListener('pointerleave', onLeave);
     };
-  }, []);
+  }, [align]);
 
   return (
     <div ref={containerRef} className={`tech-text ${className}`.trim()} style={style} role="img" aria-label={text}>

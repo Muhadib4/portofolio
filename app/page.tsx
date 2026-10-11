@@ -48,6 +48,7 @@ export default function Home() {
             text="Muhadiib"
             fontWeight={600}
             fontSize={150}
+            align="left"
             fontFamily="Arial, Helvetica, sans-serif"
             color="#F5F5F5"
             accentColor="#F5F5F5"
