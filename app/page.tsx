@@ -1,7 +1,7 @@
 'use client';
 
 import StaggeredMenu from '@/components/StaggeredMenu';
-import WarpText from '@/components/WarpText';
+import TechText from '@/components/TechText';
 
 const welcomeLetters = ['W', 'E', 'L', 'C', 'O', 'M', 'E'];
 
@@ -44,23 +44,23 @@ export default function Home() {
       <section className="home-content" id="top" aria-labelledby="intro-name">
         <p className="home-content__eyebrow">INFORMATICS · DEVELOPER IN PROGRESS</p>
         <h1 id="intro-name" className="home-content__name">
-          <WarpText
+          <TechText
             text="Muhadiib"
-            color="#f5f5f5"
-            fontSize="clamp(3.4rem, 9.5vw, 10.5rem)"
-            fontWeight={800}
+            fontWeight={600}
+            fontSize={150}
             fontFamily="Arial, Helvetica, sans-serif"
-            letterSpacing="-.085em"
-            lineHeight={.88}
-            warpStrength={.045}
-            warpScale={1.7}
-            speed={.42}
-            pointerInfluence={.42}
-            pointerStrength={.3}
-            refraction={.012}
-            ripple
-            className="home-content__warp"
-            style={{ fontSize: 'clamp(3.4rem, 9.5vw, 10.5rem)', letterSpacing: '-.085em' }}
+            color="#F5F5F5"
+            accentColor="#F5F5F5"
+            reveal="letter"
+            dashLength={4}
+            dashGap={2}
+            specks={8}
+            selection
+            labels={false}
+            draggable={false}
+            sweep
+            speed={.7}
+            className="home-content__tech"
           />
           <span className="home-content__name-line">Dwi</span>
           <span className="home-content__name-line">Taajuddiin</span>
