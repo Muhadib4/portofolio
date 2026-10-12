@@ -22,7 +22,7 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--foreground); ou
 .home-content__eyebrow, .home-content__subtitle { background: var(--background); margin: 0; position: relative; width: fit-content; z-index: 1; }
 .home-content__eyebrow { animation: home-content-in 950ms cubic-bezier(.2,.75,.25,1) 1.78s both; color: var(--muted); font-size: clamp(.6rem, .75vw, .72rem); font-weight: 400; letter-spacing: .2em; line-height: 1.6; opacity: 0; padding-right: 1.75rem; }
 .home-content__name { animation: none; background: var(--background); color: var(--foreground); display: flex; flex-direction: column; gap: 0; font-size: clamp(3.4rem, 9.5vw, 10.5rem); font-weight: 500; letter-spacing: -.085em; line-height: .88; margin: .25rem 0 0; max-width: min(100%, 72rem); opacity: 1; padding-right: 1.5rem; position: relative; width: min(78vw, 72rem); z-index: 1; }
-.home-content__tech { font-size: inherit; font-weight: inherit; height: clamp(2.8rem, 8.36vw, 9.25rem); letter-spacing: inherit; line-height: inherit; text-align: left; width: 100%; }
+.home-content__tech { font-size: inherit; font-weight: inherit; height: .88em; letter-spacing: inherit; line-height: inherit; text-align: left; width: 100%; }
 .home-content__name-line { display: block; font: inherit; line-height: .88; }
 .home-content__subtitle { animation: home-content-in 950ms cubic-bezier(.2,.75,.25,1) 1.98s both; color: var(--muted); font-size: clamp(.78rem, 1.15vw, 1rem); letter-spacing: .01em; line-height: 1.75; margin-top: 2.2rem; max-width: 38rem; opacity: 0; padding-right: 1rem; }
 
@@ -43,7 +43,7 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--foreground); ou
   .home-content { padding: 7rem 1.5rem 4rem; }
   .home-content::after { left: 1.5rem; right: 1.5rem; top: 48%; }
   .home-content__name { font-size: clamp(3rem, 14vw, 5.8rem); margin-top: .2rem; max-width: 100%; padding-right: .75rem; width: min(92vw, 38rem); }
-  .home-content__tech { height: clamp(2.35rem, 12.32vw, 4.6rem); width: 100%; }
+  .home-content__tech { height: .88em; width: 100%; }
   .home-content__eyebrow { font-size: .58rem; letter-spacing: .13em; max-width: 19rem; }
   .home-content__subtitle { font-size: .78rem; line-height: 1.8; max-width: 19rem; }
   .welcome-intro__eyebrow { font-size: 7px; letter-spacing: .16em; margin-bottom: 20px; }
