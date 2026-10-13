@@ -46,16 +46,16 @@ export default function Home() {
         <h1 id="intro-name" className="home-content__name">
           <TechText
             text="Muhadiib"
-            fontWeight={600}
+            fontWeight={555}
             fontSize={150}
             align="left"
             fontFamily="Arial, Helvetica, sans-serif"
             color="#F5F5F5"
-            accentColor="#F5F5F5"
+            accentColor="#00d8ff"
             reveal="letter"
             dashLength={4}
             dashGap={2}
-            specks={8}
+            specks={48}
             selection
             labels={false}
             draggable={false}
