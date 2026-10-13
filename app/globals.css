@@ -22,17 +22,24 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--foreground); ou
 .home-content__eyebrow, .home-content__subtitle { background: var(--background); margin: 0; position: relative; width: fit-content; z-index: 1; }
 .home-content__eyebrow { animation: home-content-in 950ms cubic-bezier(.2,.75,.25,1) 1.78s both; color: var(--muted); font-size: clamp(.6rem, .75vw, .72rem); font-weight: 400; letter-spacing: .2em; line-height: 1.6; opacity: 0; padding-right: 1.75rem; }
 .home-content__name { animation: none; background: var(--background); color: var(--foreground); display: flex; flex-direction: column; gap: 0; font-size: clamp(3.4rem, 9.5vw, 10.5rem); font-weight: 500; letter-spacing: -.085em; line-height: .88; margin: .25rem 0 0; max-width: min(100%, 72rem); opacity: 1; padding-right: 1.5rem; position: relative; width: min(78vw, 72rem); z-index: 1; }
-.home-content__tech {
+
+.tech-text.home-content__tech {
   display: block;
-  font-size: inherit;
-  font-weight: inherit;
-  height: .88em;
-  letter-spacing: inherit;
-  line-height: .88;
-  margin-block: .08em;
-  text-align: left;
+  height: 0.88em;
+  min-height: 0;
+  margin-block: 0;
+  padding: 0;
+  line-height: 0.88;
   width: 100%;
+  overflow: hidden;
 }
+
+.home-content__tech .tech-text-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .home-content__name-line { display: block; font: inherit; line-height: .88; }
 .home-content__subtitle { animation: home-content-in 950ms cubic-bezier(.2,.75,.25,1) 1.98s both; color: var(--muted); font-size: clamp(.78rem, 1.15vw, 1rem); letter-spacing: .01em; line-height: 1.75; margin-top: 2.2rem; max-width: 38rem; opacity: 0; padding-right: 1rem; }
 
