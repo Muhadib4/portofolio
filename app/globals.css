@@ -29,6 +29,7 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--foreground); ou
   height: .88em;
   letter-spacing: inherit;
   line-height: .88;
+  margin-block: .08em;
   text-align: left;
   width: 100%;
 }
