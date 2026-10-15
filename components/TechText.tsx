@@ -300,19 +300,16 @@ const TechText = ({
     };
 
     const glyphAt = (x: number, y: number) => {
-      if (!word || y < word.top - 24 || y > word.bottom + 24) return -1;
-      let best = -1;
-      let bestDistance = Infinity;
-      glyphs.forEach((glyph, i) => {
-        const x1 = glyph.box.x1 + glyph.offset.x;
-        const x2 = glyph.box.x2 + glyph.offset.x;
-        const d = x < x1 ? x1 - x : x > x2 ? x - x2 : 0;
-        if (d < bestDistance) {
-          bestDistance = d;
-          best = i;
-        }
-      });
-      return bestDistance < 28 ? best : -1;
+      const hitPadding = 3;
+      for (let i = glyphs.length - 1; i >= 0; i--) {
+        const glyph = glyphs[i];
+        const x1 = glyph.box.x1 + glyph.offset.x - hitPadding;
+        const y1 = glyph.box.y1 + glyph.offset.y - hitPadding;
+        const x2 = glyph.box.x2 + glyph.offset.x + hitPadding;
+        const y2 = glyph.box.y2 + glyph.offset.y + hitPadding;
+        if (x >= x1 && x <= x2 && y >= y1 && y <= y2) return i;
+      }
+      return -1;
     };
 
     const falloff = (
