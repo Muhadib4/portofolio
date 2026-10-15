@@ -1,6 +1,7 @@
 'use client';
 
 import StaggeredMenu from '@/components/StaggeredMenu';
+import SplashCursor from '@/components/SplashCursor';
 import TechText from '@/components/TechText';
 
 const welcomeLetters = ['W', 'E', 'L', 'C', 'O', 'M', 'E'];
@@ -8,6 +9,7 @@ const welcomeLetters = ['W', 'E', 'L', 'C', 'O', 'M', 'E'];
 export default function Home() {
   return (
     <main className="intro-home">
+      <SplashCursor rainbow size={1} force={1} swirl={3} trail={1} clickSplash zIndex={0} />
       <div className="welcome-intro" aria-hidden="true">
         <p className="welcome-intro__eyebrow">MUHADIIB DWI TAAJUDDIIN TRISNO</p>
         <div className="welcome-intro__word">
