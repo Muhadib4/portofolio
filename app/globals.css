@@ -19,9 +19,9 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--foreground); ou
 .intro-home { isolation: isolate; background: var(--background); min-height: 100svh; overflow: hidden; position: relative; width: 100%; }
 .home-content { display: flex; flex-direction: column; justify-content: center; min-height: 100svh; padding: clamp(7rem, 15vh, 11rem) clamp(1.5rem, 10vw, 10rem) clamp(4rem, 10vh, 8rem); position: relative; z-index: 1; }
 .home-content::after { background: var(--line); content: ''; height: 1px; left: clamp(1.5rem, 10vw, 10rem); opacity: .8; position: absolute; right: clamp(1.5rem, 10vw, 10rem); top: 50%; z-index: -1; }
-.home-content__eyebrow, .home-content__subtitle { background: var(--background); margin: 0; position: relative; width: fit-content; z-index: 1; }
+.home-content__eyebrow, .home-content__subtitle { background: transparent; margin: 0; position: relative; width: fit-content; z-index: 1; }
 .home-content__eyebrow { animation: home-content-in 950ms cubic-bezier(.2,.75,.25,1) 1.78s both; color: var(--muted); font-size: clamp(.6rem, .75vw, .72rem); font-weight: 400; letter-spacing: .2em; line-height: 1.6; opacity: 0; padding-right: 1.75rem; }
-.home-content__name { animation: none; background: var(--background); color: var(--foreground); display: flex; flex-direction: column; gap: 0; font-size: clamp(3.4rem, 9.5vw, 10.5rem); font-weight: 500; letter-spacing: -.085em; line-height: .88; margin: .25rem 0 0; max-width: min(100%, 72rem); opacity: 1; padding-right: 1.5rem; position: relative; width: min(78vw, 72rem); z-index: 1; }
+.home-content__name { animation: none; background: transparent; color: var(--foreground); display: flex; flex-direction: column; gap: 0; font-size: clamp(3.4rem, 9.5vw, 10.5rem); font-weight: 500; letter-spacing: -.085em; line-height: .88; margin: .25rem 0 0; max-width: min(100%, 72rem); opacity: 1; padding-right: 1.5rem; position: relative; width: min(78vw, 72rem); z-index: 1; }
 
 .tech-text.home-content__tech {
   display: block;
