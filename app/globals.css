@@ -29,7 +29,8 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--foreground); ou
   margin-block: 0;
   padding: 0;
   line-height: 0.88;
-  width: 100%;
+  width: min(620px, 60vw);
+  max-width: 100%;
   overflow: hidden;
 }
 
