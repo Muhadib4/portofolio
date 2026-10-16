@@ -9,7 +9,20 @@ const welcomeLetters = ['W', 'E', 'L', 'C', 'O', 'M', 'E'];
 export default function Home() {
   return (
     <main className="intro-home">
-      <SplashCursor rainbow size={1} force={1} swirl={3} trail={1} clickSplash zIndex={0} />
+    
+    <SplashCursor
+        rainbow={false}
+        size={1}
+        force={3}
+        swirl={21.5}
+        trail={5}
+        clickSplash
+        colors={["#006895","#0799ba","#1fa5b0","#8ec1b8","#dfdcd3"]}
+        colorSpeed={4}
+        intensity={3}
+        momentum={2}
+        glow={0.1}
+    />
       <div className="welcome-intro" aria-hidden="true">
         <p className="welcome-intro__eyebrow">MUHADIIB DWI TAAJUDDIIN TRISNO</p>
         <div className="welcome-intro__word">
