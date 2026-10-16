@@ -17,7 +17,16 @@ export default function Home() {
         swirl={21.5}
         trail={5}
         clickSplash
-        colors={["#006895","#0799ba","#1fa5b0","#8ec1b8","#dfdcd3"]}
+        colors={[
+            '#000000',
+          '#050B1F',
+          '#0A1B4D',
+          '#123A8C',
+          '#155EEF',
+          '#3B82F6',
+          '#BFDBFE',
+          '#FFFFFF'
+        ]}
         colorSpeed={4}
         intensity={3}
         momentum={2}
