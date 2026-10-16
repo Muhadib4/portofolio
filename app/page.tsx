@@ -20,6 +20,8 @@ export default function Home() {
         colors={[
             "#2C0904",
             "#702C0F",
+            "#688f4e",
+            "#FFFFFF",
             "#77351A",
             "#AD4E19",
             "#F4A62B"
