@@ -31,6 +31,7 @@ export default function Home() {
         intensity={3}
         momentum={2}
         glow={0.1}
+        zIndex={0}
     />
       <div className="welcome-intro" aria-hidden="true">
         <p className="welcome-intro__eyebrow">MUHADIIB DWI TAAJUDDIIN TRISNO</p>
