@@ -254,10 +254,10 @@ const hsv = (h, s, v) => {
 };
 
 function SplashCursor({
-  colors = ['#4f8cff', '#2dd4bf', '#ffd166'],
-  rainbow = true,
+  colors = ['#ffffff'],
+  rainbow = false,
   colorSpeed = 1,
-  intensity = 1,
+  intensity = 3,
   size = 1,
   force = 1,
   swirl = 12,
@@ -267,7 +267,7 @@ function SplashCursor({
   glow = 0,
   quality = 'high',
   clickSplash = true,
-  intro = true,
+  intro = false,
   contained = false,
   theme = 'dark',
   zIndex = 50,
