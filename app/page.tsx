@@ -14,24 +14,19 @@ export default function Home() {
         rainbow={false}
         size={1}
         force={3}
-        swirl={21.5}
+        swirl={10}
         trail={5}
         clickSplash
         colors={[
-            '#000000',
-          '#050B1F',
-          '#0A1B4D',
-          '#123A8C',
-          '#155EEF',
-          '#3B82F6',
-          '#BFDBFE',
-          '#FFFFFF'
+            "#2C0904",
+            "#702C0F",
+            "#77351A",
+            "#AD4E19",
+            "#F4A62B"
         ]}
         colorSpeed={4}
         intensity={3}
-        momentum={2}
-        glow={0.1}
-        zIndex={0}
+        momentum={2.5}
     />
       <div className="welcome-intro" aria-hidden="true">
         <p className="welcome-intro__eyebrow">MUHADIIB DWI TAAJUDDIIN TRISNO</p>
