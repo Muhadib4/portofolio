@@ -19,8 +19,8 @@ export default function Home() {
         clickSplash
         colors={[
             "#BD190A",
-            "#19BD0A",
-            "#7e7e7e",
+            "#2b463c",
+            "#474747",
             "#F4A62B"
         ]}
         colorSpeed={4}
