@@ -18,12 +18,9 @@ export default function Home() {
         trail={5}
         clickSplash
         colors={[
-            "#2C0904",
-            "#702C0F",
-            "#688f4e",
-            "#FFFFFF",
-            "#77351A",
-            "#AD4E19",
+            "#BD190A",
+            "#19BD0A",
+            "#7e7e7e",
             "#F4A62B"
         ]}
         colorSpeed={4}
