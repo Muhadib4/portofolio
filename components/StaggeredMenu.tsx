@@ -7,6 +7,8 @@ import './StaggeredMenu.css';
 
 type MenuItem = { label: string; link: string; ariaLabel?: string };
 type SocialItem = { label: string; link: string };
+type EffectCategory = 'cursor' | 'background';
+type EffectSelections = Partial<Record<EffectCategory, string | null>>;
 type StaggeredMenuProps = {
   position?: 'left' | 'right';
   colors?: string[];
@@ -24,6 +26,8 @@ type StaggeredMenuProps = {
   closeOnClickAway?: boolean;
   onMenuOpen?: () => void;
   onMenuClose?: () => void;
+  selectedEffects?: EffectSelections;
+  onEffectSelect?: (category: EffectCategory, effectId: string | null) => void;
 };
 
 export const StaggeredMenu = ({
@@ -42,9 +46,12 @@ export const StaggeredMenu = ({
   isFixed = false,
   closeOnClickAway = true,
   onMenuOpen,
-  onMenuClose
+  onMenuClose,
+  selectedEffects = {},
+  onEffectSelect
 }: StaggeredMenuProps) => {
   const [open, setOpen] = useState(false);
+  const [effectSelectorOpen, setEffectSelectorOpen] = useState(false);
   const openRef = useRef(false);
   const panelRef = useRef(null);
   const preLayersRef = useRef(null);
@@ -64,6 +71,28 @@ export const StaggeredMenu = ({
   const toggleBtnRef = useRef(null);
   const busyRef = useRef(false);
   const itemEntranceTweenRef = useRef(null);
+  const effectSelectorRef = useRef(null);
+  const effectsButtonRef = useRef(null);
+
+  const effectCategories = [
+    { id: 'cursor', label: 'Cursor', effects: [{ id: 'splash-cursor', label: 'SplashCursor' }] },
+    { id: 'background', label: 'Background', effects: [{ id: 'topography', label: 'Topography' }] }
+  ];
+
+  const handleEffectSelect = useCallback((category, effectId) => {
+    const selected = selectedEffects?.[category] === effectId;
+    onEffectSelect?.(category, selected ? null : effectId);
+  }, [onEffectSelect, selectedEffects]);
+
+  React.useEffect(() => {
+    if (!open) setEffectSelectorOpen(false);
+  }, [open]);
+
+  React.useEffect(() => {
+    if (open && effectSelectorOpen) {
+      effectSelectorRef.current?.querySelector('button')?.focus();
+    }
+  }, [effectSelectorOpen, open]);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -449,6 +478,63 @@ export const StaggeredMenu = ({
               </ul>
             </div>
           )}
+          <div className="sm-effects-anchor">
+            <div
+              id="sm-effects-selector"
+              ref={effectSelectorRef}
+              className="sm-effects-selector"
+              role="dialog"
+              aria-label="Visual effects"
+              hidden={!effectSelectorOpen}
+              onKeyDown={event => {
+                if (event.key === 'Escape') {
+                  setEffectSelectorOpen(false);
+                  effectsButtonRef.current?.focus();
+                }
+              }}
+            >
+              {effectCategories.map(category => (
+                <section className="sm-effects-category" key={category.id} aria-labelledby={`sm-effects-${category.id}`}>
+                  <h3 id={`sm-effects-${category.id}`}>{category.label}</h3>
+                  <div role="group" aria-label={`${category.label} effects`}>
+                    {category.effects.map(effect => {
+                      const selected = selectedEffects?.[category.id] === effect.id;
+                      return (
+                        <button
+                          className="sm-effect-option"
+                          key={effect.id}
+                          type="button"
+                          aria-pressed={selected}
+                          tabIndex={open && effectSelectorOpen ? 0 : -1}
+                          onClick={() => handleEffectSelect(category.id, effect.id)}
+                        >
+                          <span>{effect.label}</span>
+                          <span className="sm-effect-option__indicator" aria-hidden="true">{selected ? '✓' : ''}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
+              ))}
+            </div>
+            <button
+              ref={effectsButtonRef}
+              className="sm-effects-button"
+              type="button"
+              aria-label="Open visual effects settings"
+              aria-haspopup="dialog"
+              aria-expanded={effectSelectorOpen}
+              aria-controls="sm-effects-selector"
+              tabIndex={open ? 0 : -1}
+              onClick={() => setEffectSelectorOpen(value => !value)}
+            >
+              <span>Effects</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" />
+                <path d="m19.4 13.5 1.1.8-1.1 1.9-1.3-.5a7.5 7.5 0 0 1-1.3.8l-.2 1.4h-2.2l-.3-1.4a7.5 7.5 0 0 1-1.5 0l-.7 1.2-1.9-1.1.5-1.3a7.5 7.5 0 0 1-.8-1.3l-1.4-.2v-2.2l1.4-.3a7.5 7.5 0 0 1 0-1.5l-1.2-.7 1.1-1.9 1.3.5a7.5 7.5 0 0 1 1.3-.8l.2-1.4h2.2l.3 1.4a7.5 7.5 0 0 1 1.5 0l.7-1.2 1.9 1.1-.5 1.3a7.5 7.5 0 0 1 .8 1.3l1.4.2v2.2l-1.4.3a7.5 7.5 0 0 1 0 1.5Z" />
+              </svg>
+            </button>
+          </div>
         </div>
       </aside>
     </div>
