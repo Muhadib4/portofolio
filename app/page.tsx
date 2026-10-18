@@ -112,7 +112,8 @@ export default function Home() {
     "#302F25",
     "#423B2B",
     "#514635",
-    "#292C27"
+    "#292C27",
+    "#000000"
 ]}
         colorSpeed={4}
         intensity={3}
