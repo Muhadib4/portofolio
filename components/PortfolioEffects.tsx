@@ -46,7 +46,7 @@ const TOPOGRAPHY_SETTINGS = {
   brightness: 2,
   mouseRadius: 0.3,
   mouseStrength: 1.5,
-  trail: 1,
+  trail: 0.25,
   parallax: 1
 } satisfies TopographyProps;
 
@@ -56,7 +56,7 @@ const TOPOGRAPHY_STYLE = {
   zIndex: 0,
   width: '100%',
   height: '100%',
-  opacity: 0.28,
+  opacity: 0.5,
   pointerEvents: 'none'
 } as const;
 
