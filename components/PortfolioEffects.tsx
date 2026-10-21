@@ -30,7 +30,7 @@ const TOPOGRAPHY_SETTINGS = {
   color: '#4f7cff',
   lineCount: 60,
   lineWidth: 0.6,
-  elevation: 0.15,
+  elevation: 0.5,
   foreground: 1,
   tilt: 15,
   speed: 0.35,
