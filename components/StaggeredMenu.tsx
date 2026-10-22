@@ -95,19 +95,19 @@ export const StaggeredMenu = ({
       const now = context.currentTime;
       const gain = context.createGain();
       gain.gain.setValueAtTime(Math.max(0.001, soundVolume), now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + (kind === 'magic' ? 0.42 : 0.16));
+      gain.gain.exponentialRampToValueAtTime(0.001, now + (kind === 'magic' ? 0.42 : kind === 'hover' ? 0.075 : 0.16));
       gain.connect(context.destination);
       const oscillator = context.createOscillator();
       const filter = context.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(kind === 'magic' ? 1700 : 1200, now);
-      oscillator.type = kind === 'magic' ? 'sine' : 'triangle';
-      oscillator.frequency.setValueAtTime(kind === 'magic' ? 660 : 520, now);
-      oscillator.frequency.exponentialRampToValueAtTime(kind === 'magic' ? 990 : 360, now + (kind === 'magic' ? 0.3 : 0.12));
+      filter.frequency.setValueAtTime(kind === 'magic' ? 1700 : kind === 'hover' ? 950 : 1200, now);
+      oscillator.type = kind === 'magic' || kind === 'hover' ? 'sine' : 'triangle';
+      oscillator.frequency.setValueAtTime(kind === 'magic' ? 660 : kind === 'hover' ? 740 : 520, now);
+      oscillator.frequency.exponentialRampToValueAtTime(kind === 'magic' ? 990 : kind === 'hover' ? 580 : 360, now + (kind === 'magic' ? 0.3 : kind === 'hover' ? 0.075 : 0.12));
       oscillator.connect(filter);
       filter.connect(gain);
       oscillator.start(now);
-      oscillator.stop(now + (kind === 'magic' ? 0.42 : 0.16));
+      oscillator.stop(now + (kind === 'magic' ? 0.42 : kind === 'hover' ? 0.075 : 0.16));
       oscillator.onended = () => { oscillator.disconnect(); filter.disconnect(); gain.disconnect(); };
     } catch {
       // Audio is an optional enhancement; never interrupt UI interactions.
