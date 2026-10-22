@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import StaggeredMenu from '@/components/StaggeredMenu';
 import SplashCursor from '@/components/SplashCursor';
 import Topography, { type TopographyProps } from '@/components/Topography';
@@ -70,6 +70,79 @@ export default function PortfolioEffects() {
 
   const handleEffectSelect = useCallback((category: EffectCategory, effectId: string | null) => {
     setSelectedEffects(current => ({ ...current, [category]: effectId }));
+  }, []);
+
+  const interactionAudioRef = useRef<AudioContext | null>(null);
+  const lastMouseSoundRef = useRef(0);
+  const lastMousePositionRef = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    if (!soundEnabled) return;
+
+    const playInteractionTone = (kind: 'topography' | 'splash' | 'click') => {
+      try {
+        const AudioContextClass = window.AudioContext;
+        if (!AudioContextClass) return;
+        if (!interactionAudioRef.current) interactionAudioRef.current = new AudioContextClass();
+        const audio = interactionAudioRef.current;
+        if (audio.state === 'suspended') void audio.resume();
+        const now = audio.currentTime;
+        const isTopo = kind === 'topography';
+        const isClick = kind === 'click';
+        const oscillator = audio.createOscillator();
+        const filter = audio.createBiquadFilter();
+        const gain = audio.createGain();
+        oscillator.type = isTopo ? 'sine' : 'triangle';
+        oscillator.frequency.setValueAtTime(isTopo ? 190 : isClick ? 880 : 310, now);
+        oscillator.frequency.exponentialRampToValueAtTime(isTopo ? 250 : isClick ? 520 : 180, now + (isClick ? 0.18 : 0.12));
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(isTopo ? 420 : 1800, now);
+        gain.gain.setValueAtTime(Math.max(0.001, soundVolume * (isClick ? 0.24 : 0.075)), now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + (isClick ? 0.2 : 0.14));
+        oscillator.connect(filter);
+        filter.connect(gain);
+        gain.connect(audio.destination);
+        oscillator.start(now);
+        oscillator.stop(now + (isClick ? 0.2 : 0.14));
+        oscillator.onended = () => {
+          oscillator.disconnect();
+          filter.disconnect();
+          gain.disconnect();
+        };
+      } catch {
+        // Audio is optional and must never interrupt the visual effect.
+      }
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      const activeEffect = selectedEffects.background === 'topography'
+        ? 'topography'
+        : selectedEffects.cursor === 'splash-cursor' ? 'splash' : null;
+      if (!activeEffect) return;
+      const previous = lastMousePositionRef.current;
+      const distance = Math.hypot(event.clientX - previous.x, event.clientY - previous.y);
+      lastMousePositionRef.current = { x: event.clientX, y: event.clientY };
+      const now = performance.now();
+      const interval = activeEffect === 'topography' ? 190 : 145;
+      if (distance < 8 || now - lastMouseSoundRef.current < interval) return;
+      lastMouseSoundRef.current = now;
+      playInteractionTone(activeEffect);
+    };
+
+    const onPointerDown = () => {
+      if (selectedEffects.cursor === 'splash-cursor') playInteractionTone('click');
+    };
+
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('pointerdown', onPointerDown, { passive: true });
+    return () => {
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [soundEnabled, soundVolume, selectedEffects.background, selectedEffects.cursor]);
+
+  useEffect(() => () => {
+    if (interactionAudioRef.current) void interactionAudioRef.current.close();
   }, []);
 
   return (
