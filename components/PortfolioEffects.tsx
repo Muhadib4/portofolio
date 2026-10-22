@@ -83,9 +83,12 @@ export default function PortfolioEffects() {
       try {
         const AudioContextClass = window.AudioContext;
         if (!AudioContextClass) return;
-        if (!interactionAudioRef.current) interactionAudioRef.current = new AudioContextClass();
+        if (!interactionAudioRef.current || interactionAudioRef.current.state === 'closed') {
+          interactionAudioRef.current = new AudioContextClass();
+        }
         const audio = interactionAudioRef.current;
         if (audio.state === 'suspended') void audio.resume();
+
         const now = audio.currentTime;
         const isTopo = kind === 'topography';
         const isClick = kind === 'click';
@@ -93,24 +96,24 @@ export default function PortfolioEffects() {
         const filter = audio.createBiquadFilter();
         const gain = audio.createGain();
         oscillator.type = isTopo ? 'sine' : 'triangle';
-        oscillator.frequency.setValueAtTime(isTopo ? 190 : isClick ? 880 : 310, now);
-        oscillator.frequency.exponentialRampToValueAtTime(isTopo ? 250 : isClick ? 520 : 180, now + (isClick ? 0.18 : 0.12));
+        oscillator.frequency.setValueAtTime(isTopo ? 185 : isClick ? 720 : 310, now);
+        oscillator.frequency.exponentialRampToValueAtTime(isTopo ? 245 : isClick ? 420 : 185, now + (isClick ? 0.16 : 0.13));
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(isTopo ? 420 : 1800, now);
-        gain.gain.setValueAtTime(Math.max(0.001, soundVolume * (isClick ? 0.24 : 0.075)), now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + (isClick ? 0.2 : 0.14));
+        filter.frequency.setValueAtTime(isTopo ? 520 : 1600, now);
+        gain.gain.setValueAtTime(Math.max(0.001, soundVolume * (isClick ? 0.2 : isTopo ? 0.065 : 0.075)), now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + (isClick ? 0.18 : 0.14));
         oscillator.connect(filter);
         filter.connect(gain);
         gain.connect(audio.destination);
         oscillator.start(now);
-        oscillator.stop(now + (isClick ? 0.2 : 0.14));
+        oscillator.stop(now + (isClick ? 0.18 : 0.14));
         oscillator.onended = () => {
           oscillator.disconnect();
           filter.disconnect();
           gain.disconnect();
         };
       } catch {
-        // Audio is optional and must never interrupt the visual effect.
+        // Sound is optional and must never interrupt the visual effect.
       }
     };
 
@@ -119,6 +122,7 @@ export default function PortfolioEffects() {
         ? 'topography'
         : selectedEffects.cursor === 'splash-cursor' ? 'splash' : null;
       if (!activeEffect) return;
+
       const previous = lastMousePositionRef.current;
       const distance = Math.hypot(event.clientX - previous.x, event.clientY - previous.y);
       lastMousePositionRef.current = { x: event.clientX, y: event.clientY };
@@ -129,7 +133,12 @@ export default function PortfolioEffects() {
       playInteractionTone(activeEffect);
     };
 
-    const onPointerDown = () => {
+    const onPointerDown = (event: PointerEvent) => {
+      // Topography has its own independent click sound, even with SplashCursor disabled.
+      if (selectedEffects.background === 'topography') {
+        playInteractionTone('click');
+        return;
+      }
       if (selectedEffects.cursor === 'splash-cursor') playInteractionTone('click');
     };
 
