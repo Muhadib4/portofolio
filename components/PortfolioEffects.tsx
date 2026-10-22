@@ -61,6 +61,8 @@ const TOPOGRAPHY_STYLE = {
 } as const;
 
 export default function PortfolioEffects() {
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [soundVolume, setSoundVolume] = useState(0.22);
   const [selectedEffects, setSelectedEffects] = useState<EffectSelections>({
     cursor: 'splash-cursor',
     background: null
@@ -118,6 +120,10 @@ export default function PortfolioEffects() {
         socialItems={[{ label: 'GitHub', link: 'https://github.com/Muhadib4/portofolio' }]}
         selectedEffects={selectedEffects}
         onEffectSelect={handleEffectSelect}
+        soundEnabled={soundEnabled}
+        soundVolume={soundVolume}
+        onSoundEnabledChange={setSoundEnabled}
+        onSoundVolumeChange={setSoundVolume}
       />
     </>
   );
