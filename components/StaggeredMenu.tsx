@@ -28,6 +28,10 @@ type StaggeredMenuProps = {
   onMenuClose?: () => void;
   selectedEffects?: EffectSelections;
   onEffectSelect?: (category: EffectCategory, effectId: string | null) => void;
+  soundEnabled?: boolean;
+  soundVolume?: number;
+  onSoundEnabledChange?: (enabled: boolean) => void;
+  onSoundVolumeChange?: (volume: number) => void;
 };
 
 export const StaggeredMenu = ({
@@ -48,7 +52,11 @@ export const StaggeredMenu = ({
   onMenuOpen,
   onMenuClose,
   selectedEffects = {},
-  onEffectSelect
+  onEffectSelect,
+  soundEnabled = true,
+  soundVolume = 0.22,
+  onSoundEnabledChange,
+  onSoundVolumeChange
 }: StaggeredMenuProps) => {
   const [open, setOpen] = useState(false);
   const [effectSelectorOpen, setEffectSelectorOpen] = useState(false);
@@ -73,6 +81,42 @@ export const StaggeredMenu = ({
   const itemEntranceTweenRef = useRef(null);
   const effectSelectorRef = useRef(null);
   const effectsButtonRef = useRef(null);
+  const audioContextRef = useRef(null);
+  const lastHoverSoundRef = useRef(0);
+
+  const playUiSound = useCallback((kind = 'click') => {
+    if (!soundEnabled || typeof window === 'undefined') return;
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      if (!audioContextRef.current) audioContextRef.current = new AudioContextClass();
+      const context = audioContextRef.current;
+      if (context.state === 'suspended') void context.resume();
+      const now = context.currentTime;
+      const gain = context.createGain();
+      gain.gain.setValueAtTime(Math.max(0.001, soundVolume), now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + (kind === 'magic' ? 0.42 : kind === 'hover' ? 0.075 : 0.16));
+      gain.connect(context.destination);
+      const oscillator = context.createOscillator();
+      const filter = context.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(kind === 'magic' ? 1700 : kind === 'hover' ? 950 : 1200, now);
+      oscillator.type = kind === 'magic' || kind === 'hover' ? 'sine' : 'triangle';
+      oscillator.frequency.setValueAtTime(kind === 'magic' ? 660 : kind === 'hover' ? 740 : 520, now);
+      oscillator.frequency.exponentialRampToValueAtTime(kind === 'magic' ? 990 : kind === 'hover' ? 580 : 360, now + (kind === 'magic' ? 0.3 : kind === 'hover' ? 0.075 : 0.12));
+      oscillator.connect(filter);
+      filter.connect(gain);
+      oscillator.start(now);
+      oscillator.stop(now + (kind === 'magic' ? 0.42 : kind === 'hover' ? 0.075 : 0.16));
+      oscillator.onended = () => { oscillator.disconnect(); filter.disconnect(); gain.disconnect(); };
+    } catch {
+      // Audio is an optional enhancement; never interrupt UI interactions.
+    }
+  }, [soundEnabled, soundVolume]);
+
+  React.useEffect(() => () => {
+    if (audioContextRef.current) void audioContextRef.current.close();
+  }, []);
 
   const effectCategories = [
     { id: 'cursor', label: 'Cursor', effects: [{ id: 'splash-cursor', label: 'SplashCursor' }] },
@@ -82,7 +126,8 @@ export const StaggeredMenu = ({
   const handleEffectSelect = useCallback((category, effectId) => {
     const selected = selectedEffects?.[category] === effectId;
     onEffectSelect?.(category, selected ? null : effectId);
-  }, [onEffectSelect, selectedEffects]);
+    playUiSound('magic');
+  }, [onEffectSelect, selectedEffects, playUiSound]);
 
   React.useEffect(() => {
     if (!open) setEffectSelectorOpen(false);
@@ -359,6 +404,7 @@ export const StaggeredMenu = ({
     const target = !openRef.current;
     openRef.current = target;
     setOpen(target);
+    playUiSound(target ? 'magic' : 'click');
     if (target) {
       onMenuOpen?.();
       playOpen();
@@ -369,19 +415,34 @@ export const StaggeredMenu = ({
     animateIcon(target);
     animateColor(target);
     animateText(target);
-  }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
+  }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose, playUiSound]);
+
+  React.useEffect(() => {
+    if (!soundEnabled) return;
+    const onPointerOver = event => {
+      const target = event.target;
+      if (!(target instanceof Element) || !target.closest('button, a, [role="button"]')) return;
+      const now = performance.now();
+      if (now - lastHoverSoundRef.current < 110) return;
+      lastHoverSoundRef.current = now;
+      playUiSound('hover');
+    };
+    document.addEventListener('pointerover', onPointerOver, { passive: true });
+    return () => document.removeEventListener('pointerover', onPointerOver);
+  }, [soundEnabled, playUiSound]);
 
   const closeMenu = useCallback(() => {
     if (openRef.current) {
       openRef.current = false;
       setOpen(false);
+      playUiSound('click');
       onMenuClose?.();
       playClose();
       animateIcon(false);
       animateColor(false);
       animateText(false);
     }
-  }, [playClose, animateIcon, animateColor, animateText, onMenuClose]);
+  }, [playClose, animateIcon, animateColor, animateText, onMenuClose, playUiSound]);
 
   React.useEffect(() => {
     if (!closeOnClickAway || !open) return;
@@ -516,6 +577,17 @@ export const StaggeredMenu = ({
                   </div>
                 </section>
               ))}
+              <section className="sm-effects-category sm-sound-settings" aria-labelledby="sm-effects-sound">
+                <h3 id="sm-effects-sound">Interaction sound</h3>
+                <label className="sm-sound-toggle">
+                  <span>Sound effects</span>
+                  <input type="checkbox" checked={soundEnabled} onChange={event => { onSoundEnabledChange?.(event.target.checked); if (event.target.checked) playUiSound('magic'); }} />
+                </label>
+                <label className="sm-sound-volume">
+                  <span>Volume</span>
+                  <input type="range" min="0" max="0.5" step="0.01" value={soundVolume} disabled={!soundEnabled} onChange={event => onSoundVolumeChange?.(Number(event.target.value))} />
+                </label>
+              </section>
             </div>
             <button
               ref={effectsButtonRef}
@@ -526,7 +598,7 @@ export const StaggeredMenu = ({
               aria-expanded={effectSelectorOpen}
               aria-controls="sm-effects-selector"
               tabIndex={open ? 0 : -1}
-              onClick={() => setEffectSelectorOpen(value => !value)}
+              onClick={() => { setEffectSelectorOpen(value => !value); playUiSound('click'); }}
             >
               <span>Effects</span>
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
