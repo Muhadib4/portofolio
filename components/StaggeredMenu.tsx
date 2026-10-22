@@ -417,6 +417,20 @@ export const StaggeredMenu = ({
     animateText(target);
   }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose, playUiSound]);
 
+  React.useEffect(() => {
+    if (!soundEnabled) return;
+    const onPointerOver = event => {
+      const target = event.target;
+      if (!(target instanceof Element) || !target.closest('button, a, [role="button"]')) return;
+      const now = performance.now();
+      if (now - lastHoverSoundRef.current < 110) return;
+      lastHoverSoundRef.current = now;
+      playUiSound('hover');
+    };
+    document.addEventListener('pointerover', onPointerOver, { passive: true });
+    return () => document.removeEventListener('pointerover', onPointerOver);
+  }, [soundEnabled, playUiSound]);
+
   const closeMenu = useCallback(() => {
     if (openRef.current) {
       openRef.current = false;
