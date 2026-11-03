@@ -1,4 +1,4 @@
-# Muhadiib Portfolio
+# Muhadiib Portfolio.
 
 > Personal portfolio of **Muhadiib Dwi Taajuddiin Trisno** — an Informatics student exploring Full-Stack Development, Machine Learning, and AI Development.
 
