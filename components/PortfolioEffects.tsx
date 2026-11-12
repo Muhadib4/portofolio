@@ -4,7 +4,8 @@ import { useCallback, useState } from 'react';
 import StaggeredMenu from '@/components/StaggeredMenu';
 import Topography, { type TopographyProps } from '@/components/Topography';
 
-type EffectSelections = { background: string | null };
+type EffectCategory = 'cursor' | 'background';
+type EffectSelections = Partial<Record<EffectCategory, string | null>>;
 
 const TOPOGRAPHY_SETTINGS = {
   color: '#4F7CFF',
@@ -47,7 +48,7 @@ export default function PortfolioEffects() {
     background: null
   });
 
-  const handleEffectSelect = useCallback((category: 'background', effectId: string | null) => {
+  const handleEffectSelect = useCallback((category: EffectCategory, effectId: string | null) => {
     setSelectedEffects(current => ({ ...current, [category]: effectId }));
   }, []);
 
