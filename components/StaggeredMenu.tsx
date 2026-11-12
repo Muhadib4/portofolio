@@ -3,10 +3,13 @@
 
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import type { MenuCopy, PortfolioLanguage } from '@/app/portfolio-copy';
+import type { SocialPlatform } from '@/app/social-links';
+import SocialIcon from '@/components/SocialIcon';
 import './StaggeredMenu.css';
 
 type MenuItem = { label: string; link: string; ariaLabel?: string };
-type SocialItem = { label: string; link: string };
+type SocialItem = { label: string; link: string; platform: SocialPlatform };
 type EffectCategory = 'cursor' | 'background';
 type EffectSelections = Partial<Record<EffectCategory, string | null>>;
 type StaggeredMenuProps = {
@@ -32,11 +35,17 @@ type StaggeredMenuProps = {
   soundVolume?: number;
   onSoundEnabledChange?: (enabled: boolean) => void;
   onSoundVolumeChange?: (volume: number) => void;
+  language: PortfolioLanguage;
+  onLanguageChange: (language: PortfolioLanguage) => void;
+  copy: MenuCopy;
 };
+
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export const StaggeredMenu = ({
   position = 'right',
-  colors = ['#B497CF', '#5227FF'],
+  colors = ['#000000', '#4F7CFF', '#FFFFFF'],
   items = [],
   socialItems = [],
   displaySocials = true,
@@ -44,8 +53,8 @@ export const StaggeredMenu = ({
   className,
   logoUrl = '',
   menuButtonColor = '#ffffff',
-  openMenuButtonColor = '#000000',
-  accentColor = '#5227FF',
+  openMenuButtonColor = '#ffffff',
+  accentColor = '#4F7CFF',
   changeMenuColorOnOpen = true,
   isFixed = false,
   closeOnClickAway = true,
@@ -56,7 +65,10 @@ export const StaggeredMenu = ({
   soundEnabled = true,
   soundVolume = 0.22,
   onSoundEnabledChange,
-  onSoundVolumeChange
+  onSoundVolumeChange,
+  language,
+  onLanguageChange,
+  copy
 }: StaggeredMenuProps) => {
   const [open, setOpen] = useState(false);
   const [effectSelectorOpen, setEffectSelectorOpen] = useState(false);
@@ -69,7 +81,7 @@ export const StaggeredMenu = ({
   const iconRef = useRef(null);
   const textInnerRef = useRef(null);
   const textWrapRef = useRef(null);
-  const [textLines, setTextLines] = useState(['Menu', 'Close']);
+  const [textLines, setTextLines] = useState([copy.openMenu, copy.closeMenu]);
 
   const openTlRef = useRef(null);
   const closeTweenRef = useRef(null);
@@ -119,8 +131,8 @@ export const StaggeredMenu = ({
   }, []);
 
   const effectCategories = [
-    { id: 'cursor', label: 'Cursor', effects: [{ id: 'splash-cursor', label: 'SplashCursor' }] },
-    { id: 'background', label: 'Background', effects: [{ id: 'topography', label: 'Topography' }] }
+    { id: 'cursor', label: copy.cursor, effects: [{ id: 'splash-cursor', label: copy.splashCursor }] },
+    { id: 'background', label: copy.background, effects: [{ id: 'topography', label: copy.topography }] }
   ];
 
   const handleEffectSelect = useCallback((category, effectId) => {
@@ -132,6 +144,11 @@ export const StaggeredMenu = ({
   React.useEffect(() => {
     if (!open) setEffectSelectorOpen(false);
   }, [open]);
+
+  useLayoutEffect(() => {
+    setTextLines([copy.openMenu, copy.closeMenu]);
+    gsap.set(textInnerRef.current, { yPercent: openRef.current ? -50 : 0 });
+  }, [copy.closeMenu, copy.openMenu]);
 
   React.useEffect(() => {
     if (open && effectSelectorOpen) {
@@ -284,6 +301,11 @@ export const StaggeredMenu = ({
   const playOpen = useCallback(() => {
     if (busyRef.current) return;
     busyRef.current = true;
+    if (prefersReducedMotion()) {
+      gsap.set([...preLayerElsRef.current, panelRef.current].filter(Boolean), { xPercent: 0, opacity: 1 });
+      busyRef.current = false;
+      return;
+    }
     const tl = buildOpenTimeline();
     if (tl) {
       tl.eventCallback('onComplete', () => {
@@ -305,6 +327,12 @@ export const StaggeredMenu = ({
     if (!panel) return;
 
     const all = [...layers, panel];
+    if (prefersReducedMotion()) {
+      const offscreen = position === 'left' ? -100 : 100;
+      gsap.set(all, { xPercent: offscreen, opacity: 1 });
+      busyRef.current = false;
+      return;
+    }
     closeTweenRef.current?.kill();
     const offscreen = position === 'left' ? -100 : 100;
     closeTweenRef.current = gsap.to(all, {
@@ -334,6 +362,10 @@ export const StaggeredMenu = ({
     const icon = iconRef.current;
     if (!icon) return;
     spinTweenRef.current?.kill();
+    if (prefersReducedMotion()) {
+      gsap.set(icon, { rotate: opening ? 225 : 0 });
+      return;
+    }
     if (opening) {
       spinTweenRef.current = gsap.to(icon, { rotate: 225, duration: 0.8, ease: 'power4.out', overwrite: 'auto' });
     } else {
@@ -346,6 +378,10 @@ export const StaggeredMenu = ({
       const btn = toggleBtnRef.current;
       if (!btn) return;
       colorTweenRef.current?.kill();
+      if (prefersReducedMotion()) {
+        gsap.set(btn, { color: opening ? openMenuButtonColor : menuButtonColor });
+        return;
+      }
       if (changeMenuColorOnOpen) {
         const targetColor = opening ? openMenuButtonColor : menuButtonColor;
         colorTweenRef.current = gsap.to(btn, {
@@ -377,13 +413,18 @@ export const StaggeredMenu = ({
     if (!inner) return;
     textCycleAnimRef.current?.kill();
 
-    const currentLabel = opening ? 'Menu' : 'Close';
-    const targetLabel = opening ? 'Close' : 'Menu';
+    const currentLabel = opening ? copy.openMenu : copy.closeMenu;
+    const targetLabel = opening ? copy.closeMenu : copy.openMenu;
+    if (prefersReducedMotion()) {
+      setTextLines([targetLabel]);
+      gsap.set(inner, { yPercent: 0 });
+      return;
+    }
     const cycles = 3;
     const seq = [currentLabel];
     let last = currentLabel;
     for (let i = 0; i < cycles; i++) {
-      last = last === 'Menu' ? 'Close' : 'Menu';
+      last = last === copy.openMenu ? copy.closeMenu : copy.openMenu;
       seq.push(last);
     }
     if (last !== targetLabel) seq.push(targetLabel);
@@ -398,7 +439,7 @@ export const StaggeredMenu = ({
       duration: 0.5 + lineCount * 0.07,
       ease: 'power4.out'
     });
-  }, []);
+  }, [copy.closeMenu, copy.openMenu]);
 
   const toggleMenu = useCallback(() => {
     const target = !openRef.current;
@@ -445,6 +486,17 @@ export const StaggeredMenu = ({
   }, [playClose, animateIcon, animateColor, animateText, onMenuClose, playUiSound]);
 
   React.useEffect(() => {
+    if (!open) return;
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      closeMenu();
+      toggleBtnRef.current?.focus();
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [open, closeMenu]);
+
+  React.useEffect(() => {
     if (!closeOnClickAway || !open) return;
 
     const handleClickOutside = event => {
@@ -475,16 +527,16 @@ export const StaggeredMenu = ({
         {(() => {
           const arr = colors && colors.length
             ? [...colors]
-            : ['#000000', '#050B1F', '#0A1B4D', '#123A8C', '#155EEF', '#3B82F6', '#BFDBFE', '#FFFFFF'];
+            : ['#000000', '#000000', '#4F7CFF', '#FFFFFF'];
           return arr.map((c, i) => <div key={i} className="sm-prelayer" style={{ background: c }} />);
         })()}
       </div>
-      <header className="staggered-menu-header" aria-label="Main navigation header">
+      <header className="staggered-menu-header">
         <div className="sm-logo" aria-hidden="true" />
         <button
           ref={toggleBtnRef}
           className="sm-toggle"
-          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-label={open ? copy.closeMenu : copy.openMenu}
           aria-expanded={open}
           aria-controls="staggered-menu-panel"
           onClick={toggleMenu}
@@ -508,44 +560,70 @@ export const StaggeredMenu = ({
 
       <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel" aria-hidden={!open}>
         <div className="sm-panel-inner">
-          <ul className="sm-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>
-            {items && items.length ? (
-              items.map((it, idx) => (
-                <li className="sm-panel-itemWrap" key={it.label + idx}>
-                  <a className="sm-panel-item" href={it.link} aria-label={it.ariaLabel} data-index={idx + 1}>
-                    <span className="sm-panel-itemLabel">{it.label}</span>
-                  </a>
+          <nav aria-label={copy.navigation}>
+            <ul className="sm-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>
+              {items && items.length ? (
+                items.map((it, idx) => (
+                  <li className="sm-panel-itemWrap" key={it.label + idx}>
+                    <a className="sm-panel-item" href={it.link} aria-label={it.ariaLabel} data-index={idx + 1} onClick={closeMenu} tabIndex={open ? 0 : -1}>
+                      <span className="sm-panel-itemLabel">{it.label}</span>
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <li className="sm-panel-itemWrap" aria-hidden="true">
+                  <span className="sm-panel-item">
+                    <span className="sm-panel-itemLabel">No items</span>
+                  </span>
                 </li>
-              ))
-            ) : (
-              <li className="sm-panel-itemWrap" aria-hidden="true">
-                <span className="sm-panel-item">
-                  <span className="sm-panel-itemLabel">No items</span>
-                </span>
-              </li>
-            )}
-          </ul>
+              )}
+            </ul>
+          </nav>
           {displaySocials && socialItems && socialItems.length > 0 && (
-            <div className="sm-socials" aria-label="Social links">
-              <h3 className="sm-socials-title">Socials</h3>
+            <nav className="sm-socials" aria-label={copy.socials}>
+              <h3 className="sm-socials-title">{copy.socials}</h3>
               <ul className="sm-socials-list" role="list">
                 {socialItems.map((s, i) => (
                   <li key={s.label + i} className="sm-socials-item">
-                    <a href={s.link} target="_blank" rel="noopener noreferrer" className="sm-socials-link">
+                    <a href={s.link} target="_blank" rel="noopener noreferrer" className="sm-socials-link" tabIndex={open ? 0 : -1}>
+                      <SocialIcon platform={s.platform} />
                       {s.label}
                     </a>
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           )}
+          <div className="sm-language" role="group" aria-label={copy.language}>
+            <span className="sm-language-label">{copy.language}</span>
+            <div className="sm-language-options">
+              <button
+                type="button"
+                aria-label={copy.switchToEnglish}
+                aria-pressed={language === 'en'}
+                tabIndex={open ? 0 : -1}
+                onClick={() => onLanguageChange('en')}
+              >
+                EN
+              </button>
+              <button
+                type="button"
+                aria-label={copy.switchToIndonesian}
+                aria-pressed={language === 'id'}
+                tabIndex={open ? 0 : -1}
+                onClick={() => onLanguageChange('id')}
+              >
+                ID
+              </button>
+            </div>
+          </div>
           <div className="sm-effects-anchor">
             <div
               id="sm-effects-selector"
               ref={effectSelectorRef}
               className="sm-effects-selector"
               role="dialog"
-              aria-label="Visual effects"
+              aria-label={copy.effects}
               hidden={!effectSelectorOpen}
               onKeyDown={event => {
                 if (event.key === 'Escape') {
@@ -557,7 +635,7 @@ export const StaggeredMenu = ({
               {effectCategories.map(category => (
                 <section className="sm-effects-category" key={category.id} aria-labelledby={`sm-effects-${category.id}`}>
                   <h3 id={`sm-effects-${category.id}`}>{category.label}</h3>
-                  <div role="group" aria-label={`${category.label} effects`}>
+                  <div role="group" aria-label={category.label}>
                     {category.effects.map(effect => {
                       const selected = selectedEffects?.[category.id] === effect.id;
                       return (
@@ -578,14 +656,14 @@ export const StaggeredMenu = ({
                 </section>
               ))}
               <section className="sm-effects-category sm-sound-settings" aria-labelledby="sm-effects-sound">
-                <h3 id="sm-effects-sound">Interaction sound</h3>
+                <h3 id="sm-effects-sound">{copy.interactionSound}</h3>
                 <label className="sm-sound-toggle">
-                  <span>Sound effects</span>
-                  <input type="checkbox" checked={soundEnabled} onChange={event => { onSoundEnabledChange?.(event.target.checked); if (event.target.checked) playUiSound('magic'); }} />
+                  <span>{copy.soundEffects}</span>
+                  <input type="checkbox" checked={soundEnabled} tabIndex={open ? 0 : -1} onChange={event => { onSoundEnabledChange?.(event.target.checked); if (event.target.checked) playUiSound('magic'); }} />
                 </label>
                 <label className="sm-sound-volume">
-                  <span>Volume</span>
-                  <input type="range" min="0" max="0.5" step="0.01" value={soundVolume} disabled={!soundEnabled} onChange={event => onSoundVolumeChange?.(Number(event.target.value))} />
+                  <span>{copy.volume}</span>
+                  <input type="range" min="0" max="0.5" step="0.01" value={soundVolume} disabled={!soundEnabled} tabIndex={open ? 0 : -1} onChange={event => onSoundVolumeChange?.(Number(event.target.value))} />
                 </label>
               </section>
             </div>
@@ -593,14 +671,14 @@ export const StaggeredMenu = ({
               ref={effectsButtonRef}
               className="sm-effects-button"
               type="button"
-              aria-label="Open visual effects settings"
+              aria-label={copy.openEffects}
               aria-haspopup="dialog"
               aria-expanded={effectSelectorOpen}
               aria-controls="sm-effects-selector"
               tabIndex={open ? 0 : -1}
               onClick={() => { setEffectSelectorOpen(value => !value); playUiSound('click'); }}
             >
-              <span>Effects</span>
+              <span>{copy.effects}</span>
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" />
                 <path d="m19.4 13.5 1.1.8-1.1 1.9-1.3-.5a7.5 7.5 0 0 1-1.3.8l-.2 1.4h-2.2l-.3-1.4a7.5 7.5 0 0 1-1.5 0l-.7 1.2-1.9-1.1.5-1.3a7.5 7.5 0 0 1-.8-1.3l-1.4-.2v-2.2l1.4-.3a7.5 7.5 0 0 1 0-1.5l-1.2-.7 1.1-1.9 1.3.5a7.5 7.5 0 0 1 1.3-.8l.2-1.4h2.2l.3 1.4a7.5 7.5 0 0 1 1.5 0l.7-1.2 1.9 1.1-.5 1.3a7.5 7.5 0 0 1 .8 1.3l1.4.2v2.2l-1.4.3a7.5 7.5 0 0 1 0 1.5Z" />

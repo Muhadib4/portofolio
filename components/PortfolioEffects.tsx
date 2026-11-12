@@ -1,6 +1,8 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import type { PortfolioCopy, PortfolioLanguage } from '@/app/portfolio-copy';
+import { socialLinks } from '@/app/social-links';
 import StaggeredMenu from '@/components/StaggeredMenu';
 import SplashCursor from '@/components/SplashCursor';
 import Topography, { type TopographyProps } from '@/components/Topography';
@@ -11,23 +13,10 @@ type EffectSelections = Record<EffectCategory, string | null>;
 const MemoizedSplashCursor = memo(SplashCursor);
 const MemoizedTopography = memo(Topography);
 
-const SPLASH_CURSOR_COLORS = [
-  '#160D10', '#241014', '#35151A', '#481A20', '#5A2027', '#70262D', '#3D1018', '#561923',
-  '#2B1118', '#40151F', '#190C12', '#30101B', '#471522', '#601B2A', '#762436', '#4D1828',
-  '#36121E', '#21101B', '#0D1713', '#12231A', '#193024', '#203D2B', '#294A32', '#34563A',
-  '#3D6040', '#17251D', '#26362A', '#344438', '#3E4A30', '#4A512F', '#292F1D', '#20291D',
-  '#332D16', '#49401B', '#5B4C20', '#6B5927', '#75612F', '#50472B', '#28271B', '#111522',
-  '#151D30', '#1A2640', '#202F50', '#273B60', '#30466D', '#394F79', '#20243D', '#292747',
-  '#332B53', '#3D315F', '#49376A', '#28203E', '#35234A', '#432853', '#512D5B', '#2D1938',
-  '#391F47', '#482653', '#572C5D', '#211729', '#302039', '#3D2949', '#493354', '#171C20',
-  '#252A2D', '#34383A', '#444643', '#55544C', '#32291F', '#463629', '#59422E', '#6A4A30',
-  '#773C25', '#8A4528', '#A04B29', '#5B2A1D', '#6B3020', '#7A3822', '#49241D', '#3D211C',
-  '#281B19', '#35211B', '#46271D', '#572C1D', '#682F1D', '#782F1A', '#20291F', '#2C3522',
-  '#384329', '#45502F', '#514C2B', '#302F25', '#423B2B', '#514635', '#292C27', '#000000'
-];
+const SPLASH_CURSOR_COLORS = ['#4F7CFF', '#FFFFFF', '#4F7CFF'];
 
 const TOPOGRAPHY_SETTINGS = {
-  color: '#4f7cff',
+  color: '#4F7CFF',
   lineCount: 60,
   lineWidth: 0.6,
   elevation: 0.15,
@@ -35,7 +24,7 @@ const TOPOGRAPHY_SETTINGS = {
   tilt: 15,
   speed: 0.35,
   direction: 'forward',
-  glow: 0.6,
+  glow: 0.2,
   depthOfField: 1,
   fog: 0,
   hoverEffect: 'lift',
@@ -51,22 +40,38 @@ const TOPOGRAPHY_SETTINGS = {
 } satisfies TopographyProps;
 
 const TOPOGRAPHY_STYLE = {
-  position: 'absolute',
+  position: 'fixed',
   inset: 0,
   zIndex: 0,
   width: '100%',
   height: '100%',
-  opacity: 0.5,
+  opacity: 0.16,
   pointerEvents: 'none'
 } as const;
 
-export default function PortfolioEffects() {
+type PortfolioEffectsProps = {
+  language: PortfolioLanguage;
+  onLanguageChange: (language: PortfolioLanguage) => void;
+  copy: PortfolioCopy['menu'];
+  navigation: PortfolioCopy['navigation'];
+};
+
+export default function PortfolioEffects({ language, onLanguageChange, copy, navigation }: PortfolioEffectsProps) {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [soundVolume, setSoundVolume] = useState(0.22);
   const [selectedEffects, setSelectedEffects] = useState<EffectSelections>({
     cursor: 'splash-cursor',
-    background: null
+    background: 'topography'
   });
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = () => setReducedMotion(preference.matches);
+    updatePreference();
+    preference.addEventListener('change', updatePreference);
+    return () => preference.removeEventListener('change', updatePreference);
+  }, []);
 
   const handleEffectSelect = useCallback((category: EffectCategory, effectId: string | null) => {
     setSelectedEffects(current => ({ ...current, [category]: effectId }));
@@ -163,7 +168,7 @@ export default function PortfolioEffects() {
           style={TOPOGRAPHY_STYLE}
         />
       )}
-      {selectedEffects.cursor === 'splash-cursor' && (
+      {selectedEffects.cursor === 'splash-cursor' && !reducedMotion && (
         <MemoizedSplashCursor
           rainbow={false}
           size={1}
@@ -180,26 +185,33 @@ export default function PortfolioEffects() {
         />
       )}
       <StaggeredMenu
+        className="portfolio-menu"
         isFixed
         position="right"
         displaySocials
         displayItemNumbering
         menuButtonColor="#FFFFFF"
-        openMenuButtonColor="#000000"
+        openMenuButtonColor="#FFFFFF"
         changeMenuColorOnOpen
         colors={[
           '#000000',
-          '#050B1F',
-          '#0A1B4D',
-          '#123A8C',
-          '#155EEF',
-          '#3B82F6',
-          '#BFDBFE',
+          'rgba(255,255,255,0.12)',
+          '#000000',
+          '#4F7CFF',
+          'rgba(255,255,255,0.36)',
           '#FFFFFF'
         ]}
-        accentColor="#155EEF"
-        items={[{ label: 'Home', link: '#top', ariaLabel: 'Return to homepage' }]}
-        socialItems={[{ label: 'GitHub', link: 'https://github.com/Muhadib4/portofolio' }]}
+        accentColor="#4F7CFF"
+        items={[
+          { label: navigation.home, link: '#top' },
+          { label: navigation.about, link: '#about' },
+          { label: navigation.interests, link: '#interests' },
+          { label: navigation.connect, link: '#connect' }
+        ]}
+        socialItems={socialLinks.map(social => ({ label: social.platform, link: social.href, platform: social.platform }))}
+        language={language}
+        onLanguageChange={onLanguageChange}
+        copy={copy}
         selectedEffects={selectedEffects}
         onEffectSelect={handleEffectSelect}
         soundEnabled={soundEnabled}
