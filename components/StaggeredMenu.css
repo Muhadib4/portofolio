@@ -79,7 +79,7 @@
 
 
 .sm-toggle:focus-visible {
-  outline: 2px solid #155eef;
+  outline: 2px solid var(--sm-accent, #4f7cff);
   outline-offset: 4px;
   border-radius: 4px;
 }
@@ -201,7 +201,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  color: #0a1b4d;
+  color: #ffffff;
 }
 
 .sm-effects-anchor {
@@ -216,10 +216,10 @@
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  border: 1px solid rgba(10, 27, 77, 0.22);
+  border: 1px solid rgba(255, 255, 255, .18);
   border-radius: 999px;
   background: transparent;
-  color: #0a1b4d;
+  color: #ffffff;
   padding: 0.55rem 0.7rem 0.55rem 0.9rem;
   font: inherit;
   font-size: 0.72rem;
@@ -231,13 +231,13 @@
 
 .sm-effects-button:hover,
 .sm-effects-button[aria-expanded='true'] {
-  border-color: var(--sm-accent, #155eef);
-  color: var(--sm-accent, #155eef);
+  border-color: var(--sm-accent, #4f7cff);
+  color: var(--sm-accent, #4f7cff);
 }
 
 .sm-effects-button:focus-visible,
 .sm-effect-option:focus-visible {
-  outline: 2px solid var(--sm-accent, #155eef);
+  outline: 2px solid var(--sm-accent, #4f7cff);
   outline-offset: 3px;
 }
 
@@ -263,9 +263,9 @@
   padding: 0.95rem;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
-  background: rgba(8, 11, 18, 0.97);
+  background: rgba(0, 0, 0, .97);
   box-shadow: 0 14px 42px rgba(0, 0, 0, 0.28);
-  color: #f5f5f5;
+  color: #ffffff;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
@@ -276,7 +276,7 @@
 
 .sm-effects-category h3 {
   margin: 0 0 0.45rem;
-  color: #9298a5;
+  color: rgba(255, 255, 255, .68);
   font-size: 0.59rem;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -298,7 +298,7 @@
   border: 1px solid transparent;
   border-radius: 5px;
   background: transparent;
-  color: #d9dce3;
+  color: rgba(255, 255, 255, .82);
   padding: 0.45rem 0.55rem;
   font: inherit;
   font-size: 0.82rem;
@@ -309,13 +309,13 @@
 
 .sm-effect-option:hover {
   background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  color: #ffffff;
 }
 
 .sm-effect-option[aria-pressed='true'] {
-  border-color: rgba(21, 94, 239, 0.35);
-  background: rgba(21, 94, 239, 0.13);
-  color: #fff;
+  border-color: rgba(79, 124, 255, .55);
+  background: rgba(79, 124, 255, .12);
+  color: #ffffff;
 }
 
 .sm-effect-option__indicator {
@@ -332,9 +332,9 @@
 }
 
 .sm-effect-option[aria-pressed='true'] .sm-effect-option__indicator {
-  border-color: #4f7cff;
-  background: #4f7cff;
-  color: #07101f;
+  border-color: var(--sm-accent, #4f7cff);
+  background: var(--sm-accent, #4f7cff);
+  color: #000000;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -356,7 +356,7 @@
   margin: 0;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--sm-accent, #155eef);
+  color: var(--sm-accent, #4f7cff);
 }
 
 .sm-socials-list {
@@ -374,31 +374,15 @@
   opacity: 1;
 }
 
-.sm-socials-list:hover .sm-socials-link {
-  opacity: 0.35;
-}
-
-.sm-socials-list:hover .sm-socials-link:hover {
-  opacity: 1;
-}
-
 .sm-socials-link:focus-visible {
-  outline: 2px solid var(--sm-accent, #155eef);
+  outline: 2px solid var(--sm-accent, #4f7cff);
   outline-offset: 3px;
-}
-
-.sm-socials-list:focus-within .sm-socials-link {
-  opacity: 0.35;
-}
-
-.sm-socials-list:focus-within .sm-socials-link:focus-visible {
-  opacity: 1;
 }
 
 .sm-socials-link {
   font-size: 1.2rem;
   font-weight: 500;
-  color: #0a1b4d;
+  color: #ffffff;
   text-decoration: none;
   position: relative;
   padding: 2px 0;
@@ -409,14 +393,14 @@
 }
 
 .sm-socials-link:hover {
-  color: var(--sm-accent, #155eef);
+  color: var(--sm-accent, #4f7cff);
 }
 
 .sm-panel-title {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
-  color: #0a1b4d;
+  color: #ffffff;
   text-transform: uppercase;
 }
 
@@ -431,7 +415,7 @@
 
 .sm-panel-item {
   position: relative;
-  color: #000000;
+  color: #ffffff;
   font-weight: 600;
   font-size: 3.5rem;
   cursor: pointer;
@@ -471,7 +455,7 @@
 }
 
 .sm-panel-item:hover {
-  color: var(--sm-accent, #155eef);
+  color: var(--sm-accent, #4f7cff);
 }
 
 .sm-panel-list[data-numbering] {
@@ -486,7 +470,7 @@
   right: 2.8em;
   font-size: 18px;
   font-weight: 400;
-  color: var(--sm-accent, #155eef);
+  color: var(--sm-accent, #4f7cff);
   letter-spacing: 0;
   pointer-events: none;
   -webkit-user-select: none;
@@ -523,7 +507,58 @@
 
 
 /* Optional synthesized interaction sound controls */
-.sm-sound-toggle, .sm-sound-volume { display: flex; align-items: center; justify-content: space-between; gap: .8rem; color: #d9dce3; font-size: .78rem; padding: .3rem .55rem; }
+.sm-sound-toggle, .sm-sound-volume { display: flex; align-items: center; justify-content: space-between; gap: .8rem; color: rgba(255, 255, 255, .82); font-size: .78rem; padding: .3rem .55rem; }
 .sm-sound-toggle input { accent-color: #4f7cff; width: 15px; height: 15px; cursor: pointer; }
 .sm-sound-volume input { width: 112px; accent-color: #4f7cff; cursor: pointer; }
 .sm-sound-volume input:disabled { opacity: .35; cursor: not-allowed; }
+
+.portfolio-menu .sm-toggle { min-height: 44px; }
+.portfolio-menu .staggered-menu-panel { background: rgba(0, 0, 0, .9); border-left: 1px solid rgba(255, 255, 255, .18); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.portfolio-menu .sm-panel-inner { color: #ffffff; }
+.portfolio-menu .sm-panel-item {
+  color: #ffffff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.6rem, 5vw, 3.5rem);
+  font-weight: 400;
+  letter-spacing: -.04em;
+  text-transform: none;
+}
+.portfolio-menu .sm-panel-item:hover { color: var(--sm-accent, #4f7cff); }
+.portfolio-menu .sm-socials-title { color: rgba(255, 255, 255, .72); }
+.portfolio-menu .sm-socials-link { align-items: center; color: #ffffff; display: flex; gap: .55rem; min-height: 44px; transition: color 180ms ease, transform 180ms ease; }
+.portfolio-menu .sm-socials-link svg { fill: currentColor; height: 16px; width: 16px; }
+.portfolio-menu .sm-socials-link:hover { color: var(--sm-accent, #4f7cff); transform: translateX(2px); }
+.portfolio-menu .sm-socials-list:hover .sm-socials-link,
+.portfolio-menu .sm-socials-list:focus-within .sm-socials-link { opacity: 1; }
+.portfolio-menu .sm-effects-button {
+  border-color: rgba(255, 255, 255, .24);
+  color: rgba(255, 255, 255, .84);
+  min-height: 44px;
+}
+.portfolio-menu .sm-effect-option { color: rgba(255, 255, 255, .84); min-height: 44px; }
+.portfolio-menu .sm-effect-option__indicator { color: var(--sm-accent, #4f7cff); }
+.portfolio-menu .sm-effect-option[aria-pressed='true'] .sm-effect-option__indicator {
+  background: var(--sm-accent, #4f7cff);
+  border-color: var(--sm-accent, #4f7cff);
+  color: #000;
+}
+.portfolio-menu .sm-sound-toggle,
+.portfolio-menu .sm-sound-volume { color: rgba(255, 255, 255, .84); min-height: 44px; }
+.portfolio-menu .sm-sound-toggle input,
+.portfolio-menu .sm-sound-volume input { accent-color: var(--sm-accent, #4f7cff); }
+.portfolio-menu .sm-effects-selector { border-color: rgba(255, 255, 255, .2); }
+
+.portfolio-menu .sm-language { align-items: center; border-top: 1px solid rgba(255, 255, 255, .16); color: rgba(255, 255, 255, .76); display: flex; gap: 1rem; justify-content: space-between; padding-top: 1rem; }
+.portfolio-menu .sm-language-label { font-size: .88rem; }
+.portfolio-menu .sm-language-options { display: flex; gap: .45rem; }
+.portfolio-menu .sm-language-options button { background: transparent; border: 1px solid rgba(255, 255, 255, .24); border-radius: 4px; color: #ffffff; font: inherit; font-size: .76rem; font-weight: 600; min-height: 44px; min-width: 44px; padding: .5rem; transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease; }
+.portfolio-menu .sm-language-options button:hover { background: rgba(255, 255, 255, .1); border-color: rgba(255, 255, 255, .6); transform: translateY(-1px); }
+.portfolio-menu .sm-language-options button:active { transform: translateY(1px); }
+.portfolio-menu .sm-language-options button[aria-pressed='true'] { background: rgba(79, 124, 255, .14); border-color: var(--sm-accent, #4f7cff); color: #ffffff; text-decoration: underline; text-decoration-color: var(--sm-accent, #4f7cff); text-underline-offset: 4px; }
+.portfolio-menu .sm-language-options button:focus-visible { outline: 2px solid var(--sm-accent, #4f7cff); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-menu *,
+  .portfolio-menu *::before,
+  .portfolio-menu *::after { transition-duration: .01ms !important; }
+}
