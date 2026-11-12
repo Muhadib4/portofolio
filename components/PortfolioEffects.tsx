@@ -198,7 +198,7 @@ export default function PortfolioEffects() {
           '#FFFFFF'
         ]}
         accentColor="#155EEF"
-        items={[{ label: 'Home', link: '#top', ariaLabel: 'Return to homepage' }]}
+        items={[{ label: 'Home', link: '#top', ariaLabel: 'Return to homepage' }, { label: 'About', link: '#about' }, { label: 'Interests', link: '#interests' }, { label: 'Connect', link: '#connect' }]}
         socialItems={[{ label: 'GitHub', link: 'https://github.com/Muhadib4/portofolio' }]}
         selectedEffects={selectedEffects}
         onEffectSelect={handleEffectSelect}
