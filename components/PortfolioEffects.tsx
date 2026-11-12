@@ -13,7 +13,7 @@ type EffectSelections = Record<EffectCategory, string | null>;
 const MemoizedSplashCursor = memo(SplashCursor);
 const MemoizedTopography = memo(Topography);
 
-const SPLASH_CURSOR_COLORS = ['#4F7CFF', '#FFFFFF', '#4F7CFF'];
+const SPLASH_CURSOR_COLORS = ['#24272A', '#202B33', '#1B2A22'];
 
 const TOPOGRAPHY_SETTINGS = {
   color: '#4F7CFF',
@@ -181,7 +181,7 @@ export default function PortfolioEffects({ language, onLanguageChange, copy, nav
           intensity={3}
           momentum={2.5}
           glow={0}
-          zIndex={1}
+          zIndex={0}
         />
       )}
       <StaggeredMenu
