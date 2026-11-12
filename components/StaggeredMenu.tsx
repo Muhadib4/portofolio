@@ -119,6 +119,7 @@ export const StaggeredMenu = ({
   }, []);
 
   const effectCategories = [
+    { id: 'cursor', label: 'Cursor', effects: [{ id: 'splash-cursor', label: 'SplashCursor' }] },
     { id: 'background', label: 'Background', effects: [{ id: 'topography', label: 'Topography' }] }
   ];
 
