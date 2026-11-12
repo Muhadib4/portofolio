@@ -181,7 +181,7 @@ export default function PortfolioEffects({ language, onLanguageChange, copy, nav
           intensity={3}
           momentum={2.5}
           glow={0}
-          zIndex={1}
+          zIndex={0}
         />
       )}
       <StaggeredMenu
