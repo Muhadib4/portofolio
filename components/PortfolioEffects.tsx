@@ -13,7 +13,11 @@ type EffectSelections = Record<EffectCategory, string | null>;
 const MemoizedSplashCursor = memo(SplashCursor);
 const MemoizedTopography = memo(Topography);
 
-const SPLASH_CURSOR_COLORS = ['#24272A', '#202B33', '#1B2A22'];
+const SPLASH_CURSOR_COLORS = [
+    '#26332F', // Dark Forest
+    '#344653', // Deep Slate Blue
+    '#18241F'  // Abyss Green
+];
 
 const TOPOGRAPHY_SETTINGS = {
   color: '#4F7CFF',
