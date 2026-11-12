@@ -270,7 +270,7 @@ function SplashCursor({
   intro = true,
   contained = false,
   theme = 'dark',
-  zIndex = -1,
+  zIndex = 1,
   className = '',
   style
 }) {
