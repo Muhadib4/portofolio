@@ -27,6 +27,36 @@ export default function Home() {
     document.querySelector('meta[name="description"]')?.setAttribute('content', copy.metadata.description);
   }, [copy.metadata.description, copy.metadata.title, language]);
 
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('.portfolio-section'));
+    const revealSelector = '.section-meta, .section-kicker, h2, p, .interest-item, .social-link';
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    sections.forEach(section => {
+      section.querySelectorAll<HTMLElement>(revealSelector).forEach((element, index) => {
+        element.style.setProperty('--reveal-order', String(index));
+      });
+      section.classList.add('reveal-ready');
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      sections.forEach(section => section.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries, currentObserver) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        currentObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+
+    sections.forEach(section => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   const changeLanguage = (nextLanguage: PortfolioLanguage) => {
     setLanguage(nextLanguage);
     try {
