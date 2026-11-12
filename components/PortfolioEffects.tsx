@@ -14,9 +14,9 @@ const MemoizedSplashCursor = memo(SplashCursor);
 const MemoizedTopography = memo(Topography);
 
 const SPLASH_CURSOR_COLORS = [
-    '#26332F', // Dark Forest
-    '#344653', // Deep Slate Blue
-    '#18241F'  // Abyss Green
+    '#000320',
+    '#080d2d',
+    '#101639'
 ];
 
 const TOPOGRAPHY_SETTINGS = {
@@ -49,7 +49,7 @@ const TOPOGRAPHY_STYLE = {
   zIndex: 0,
   width: '100%',
   height: '100%',
-  opacity: 0.16,
+  opacity: 0.25,
   pointerEvents: 'none'
 } as const;
 
