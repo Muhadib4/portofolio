@@ -7,7 +7,17 @@ export const socialLinks = [
     href: 'https://www.linkedin.com/in/muhadiib-dwi-taajuddiin-trisno',
     handle: ''
   },
-  { platform: 'TikTok', href: 'https://www.tiktok.com/@mhdyb', handle: '@mhdyb' }
+  { platform: 'TikTok', href: 'https://www.tiktok.com/@mhdyb', handle: '@mhdyb' },
+  {
+    platform: 'Spotify',
+    href: 'https://open.spotify.com/user/31yeisq3xtb66gzn4mwvrflb6vji',
+    handle: ''
+  },
+  {
+    platform: 'Discord',
+    href: 'https://discord.com/users/747981930447765567',
+    handle: ''
+  }
 ] as const;
 
 export type SocialPlatform = (typeof socialLinks)[number]['platform'];
