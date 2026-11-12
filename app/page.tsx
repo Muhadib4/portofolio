@@ -27,9 +27,9 @@ export default function Home() {
             fontWeight={555}
             fontSize={150}
             align="left"
-            fontFamily="Arial, Helvetica, sans-serif"
-            color="#F5F5F5"
-            accentColor="#00d8ff"
+            fontFamily="Georgia, \"Times New Roman\", serif"
+            color="#F2F4FA"
+            accentColor="#4F7CFF"
             reveal="letter"
             dashLength={4}
             dashGap={2}
